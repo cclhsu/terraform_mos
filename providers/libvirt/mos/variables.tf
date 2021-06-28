@@ -61,6 +61,11 @@ variable "opensuse_tumbleweed_image_uri" {
   description = "URL of the opensuse-tumbleweed image to use"
 }
 
+variable "oracle_linux_image_uri" {
+  default     = ""
+  description = "URL of the oracle-linux image to use"
+}
+
 variable "rancher_k3os_image_uri" {
   type        = string
   default     = ""
@@ -131,8 +136,10 @@ variable "packages" {
 
   default = [
     "openssl",
-    "open-iscsi",
-    "nfs-kernel-server"
+    "python3",
+    "curl",
+    "rsync",
+    "jq",
   ]
 
   description = "List of packages to install"
@@ -372,6 +379,29 @@ variable "opensuse_tumbleweed_disk_size" {
   description = "Disk size (in bytes)"
 }
 
+variable "oracle_linuxes" {
+  type        = number
+  default     = 1
+  description = "Number of oracle-linux nodes"
+}
+
+variable "oracle_linux_memory" {
+  type        = number
+  default     = 2048
+  description = "Amount of RAM for a opensuse"
+}
+
+variable "oracle_linux_vcpu" {
+  type        = number
+  default     = 2
+  description = "Amount of virtual CPUs for a opensuse"
+}
+
+variable "oracle_linux_disk_size" {
+  type        = number
+  default     = 39728447488
+  description = "Disk size (in bytes)"
+}
 variable "rancher_k3oss" {
   type        = number
   default     = 1

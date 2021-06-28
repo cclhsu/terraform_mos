@@ -4,8 +4,9 @@
 #   path = "/tmp/terraform-provider-libvirt-pool-${var.pool}"
 # }
 
-# We fetch the latest opensuse-leap release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "opensuse_leap_image" {
+  count  = var.opensuse_leaps == 0 ? 0 : 1
   name   = "${var.stack_name}-${basename(var.opensuse_leap_image_uri)}"
   source = var.opensuse_leap_image_uri
   pool   = var.pool
@@ -60,7 +61,7 @@ resource "libvirt_volume" "opensuse-leap" {
   name           = "${var.stack_name}-opensuse-leap-volume-${count.index}"
   pool           = var.pool
   size           = var.opensuse_leap_disk_size
-  base_volume_id = libvirt_volume.opensuse_leap_image.id
+  base_volume_id = libvirt_volume.opensuse_leap_image[0].id
 }
 
 resource "libvirt_cloudinit_disk" "opensuse-leap" {

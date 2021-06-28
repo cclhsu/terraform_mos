@@ -4,8 +4,9 @@
 #   path = "/tmp/terraform-provider-libvirt-pool-${var.pool}"
 # }
 
-# We fetch the latest opensuse-tumbleweed release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "opensuse_tumbleweed_image" {
+  count  = var.opensuse_tumbleweeds == 0 ? 0 : 1
   name   = "${var.stack_name}-${basename(var.opensuse_tumbleweed_image_uri)}"
   source = var.opensuse_tumbleweed_image_uri
   pool   = var.pool
@@ -60,7 +61,7 @@ resource "libvirt_volume" "opensuse-tumbleweed" {
   name           = "${var.stack_name}-opensuse-tumbleweed-volume-${count.index}"
   pool           = var.pool
   size           = var.opensuse_tumbleweed_disk_size
-  base_volume_id = libvirt_volume.opensuse_tumbleweed_image.id
+  base_volume_id = libvirt_volume.opensuse_tumbleweed_image[0].id
 }
 
 resource "libvirt_cloudinit_disk" "opensuse-tumbleweed" {
@@ -125,7 +126,7 @@ resource "libvirt_domain" "opensuse-tumbleweed" {
 
 # resource "null_resource" "opensuse_tumbleweed_wait_cloudinit" {
 #   count      = var.opensuse_tumbleweeds
-#   depends_on = [libvirt_domain.opensuse-tumbleweed,]
+#   depends_on = [libvirt_domain.opensuse-tumbleweed,oracle-linux,]
 
 #   connection {
 #     host = element(
@@ -145,7 +146,7 @@ resource "libvirt_domain" "opensuse-tumbleweed" {
 # }
 
 # resource "null_resource" "opensuse_tumbleweed_wait_set_hostname" {
-#   depends_on = [libvirt_domain.opensuse-tumbleweed,]
+#   depends_on = [libvirt_domain.opensuse-tumbleweed,oracle-linux,]
 
 #   connection {
 #     host = element(

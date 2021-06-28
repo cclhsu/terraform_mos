@@ -4,8 +4,9 @@
 #   path = "/tmp/terraform-provider-libvirt-pool-${var.pool}"
 # }
 
-# We fetch the latest centos release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "debian_image" {
+  count  = var.debians == 0 ? 0 : 1
   name   = "${var.stack_name}-${basename(var.debian_image_uri)}"
   source = var.debian_image_uri
   pool   = var.pool
@@ -39,7 +40,7 @@ resource "libvirt_volume" "debian" {
   name           = "${var.stack_name}-debian-volume-${count.index}"
   pool           = var.pool
   size           = var.debian_disk_size
-  base_volume_id = libvirt_volume.debian_image.id
+  base_volume_id = libvirt_volume.debian_image[0].id
 }
 
 resource "libvirt_cloudinit_disk" "debian" {

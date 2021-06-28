@@ -21,20 +21,28 @@ libvirt_keyfile = ""
 
 # URL of the image to use
 # EXAMPLE:
-# lb_image_uri = "${HOME}/Documents/myImages/kvm/alpine/alpine-standard-3.12.3-x86_64.qcow2"
 # lb_image_uri = "CentOS-7-x86_64-GenericCloud.qcow2"
 # lb_image_uri = "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
-lb_image_uri = "${HOME}/Documents/myImages/kvm/centos/CentOS-7-x86_64-GenericCloud.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/alpine/alpine-standard-3.12.3-x86_64.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/centos/CentOS-7-x86_64-GenericCloud.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/centos/CentOS-7-x86_64-GenericCloud-2009.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/centos/CentOS-8-GenericCloud-8.2.2004-20200611.2.x86_64.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/centos/CentOS-8-GenericCloud-8.3.2011-20201204.2.x86_64.qcow2"
+lb_image_uri = "${HOME}/Documents/myImages/kvm/centos/CentOS-8-GenericCloud-8.4.2105-20210603.0.x86_64.qcow2"
 # lb_image_uri = "${HOME}/Documents/myImages/kvm/coreos/fedora-coreos-33.20210217.3.0-qemu.x86_64.qcow2.xz"
 # lb_image_uri = "${HOME}/Documents/myImages/kvm/debian/debian-10.5.0-openstack-amd64.qcow2"
 # lb_image_uri = "${HOME}/Documents/myImages/kvm/fedora/Fedora-Cloud-Base-32-1.6.x86_64.qcow2"
-# lb_image_uri = "${HOME}/Documents/myImages/kvm/opensuse-leap/openSUSE-Leap-15.2-OpenStack.x86_64.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/opensuse-leap/openSUSE-Leap-15.3-OpenStack.x86_64.qcow2"
 # lb_image_uri = "${HOME}/Documents/myImages/kvm/opensuse-tumbleweed/openSUSE-Tumbleweed-JeOS.x86_64-OpenStack-Cloud.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/oracle-linux/OL7U9_x86_64-olvm-b86.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/oracle-linux/OL8U4_x86_64-olvm-b85.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/rancher-harvester/harvester-amd64.qcow2"
 # lb_image_uri = "${HOME}/Documents/myImages/kvm/rancher-k3os/k3os-amd64.qcow2"
 # lb_image_uri = "${HOME}/Documents/myImages/kvm/rancher-os/rancheros.qcow2"
 # lb_image_uri = "${HOME}/Documents/myImages/kvm/raspios/2020-12-11-raspios-buster-i386.qcow2"
-# lb_image_uri = "${HOME}/Documents/myImages/kvm/sles/SLES15-SP2-JeOS.x86_64-15.2-OpenStack-Cloud-GM.qcow2"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/sles/SLES15-SP2-JeOS.x86_64-15.3-OpenStack-Cloud-GM.qcow2"
 # lb_image_uri = "${HOME}/Documents/myImages/kvm/ubuntu/ubuntu-18.04-server-cloudimg-amd64.img"
+# lb_image_uri = "${HOME}/Documents/myImages/kvm/ubuntu/ubuntu-20.04-server-cloudimg-amd64.img"
 
 # URL of the alpine image to use
 # EXAMPLE:
@@ -64,23 +72,29 @@ debian_image_uri = "${HOME}/Documents/myImages/kvm/debian/debian-10.5.0-openstac
 # EXAMPLE:
 # fedora_image_uri = "Fedora-Cloud-Base-32-1.6.x86_64.qcow2"
 # fedora_image_uri = "https://download.fedoraproject.org/pub/fedora/linux/releases/32/Cloud/x86_64/images/Fedora-Cloud-Base-32-1.6.x86_64.qcow2"
-fedora_image_uri = "${HOME}/Documents/myImages/kvm/fedora/Fedora-Cloud-Base-32-1.6.x86_6"
+fedora_image_uri = "${HOME}/Documents/myImages/kvm/fedora/Fedora-Cloud-Base-32-1.6.x86_64.qcow2"
 
 # URL of the image to use
 # EXAMPLE:
-# opensuse_leap_image_uri = "openSUSE-Leap-15.2-OpenStack.x86_64.qcow2"
-# opensuse_leap_image_uri = "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.2/images/openSUSE-Leap-15.2-OpenStack.x86_64.qcow2"
-opensuse_leap_image_uri = "${HOME}/Documents/myImages/kvm/opensuse-leap/openSUSE-Leap-15.2-OpenStack.x86_64.qcow2"
-# opensuse_leap_image_uri = "openSUSE-Leap-15.2-JeOS.x86_64-OpenStack-Cloud.qcow2"
-# opensuse_leap_image_uri = "https://download.opensuse.org/distribution/leap/15.2/jeos/openSUSE-Leap-15.2-JeOS.x86_64-OpenStack-Cloud.qcow2"
-# opensuse_leap_image_uri = "${HOME}/Documents/myImages/kvm/opensuse-leap/openSUSE-Leap-15.2-JeOS.x86_64-OpenStack-Cloud.qcow2"
-4.qcow2"
+# opensuse_leap_image_uri = "openSUSE-Leap-15.3-OpenStack.x86_64.qcow2"
+# opensuse_leap_image_uri = "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.3/images/openSUSE-Leap-15.3-OpenStack.x86_64.qcow2"
+opensuse_leap_image_uri = "${HOME}/Documents/myImages/kvm/opensuse-leap/openSUSE-Leap-15.3-OpenStack.x86_64.qcow2"
+# opensuse_leap_image_uri = "openSUSE-Leap-15.3-JeOS.x86_64-OpenStack-Cloud.qcow2"
+# opensuse_leap_image_uri = "https://download.opensuse.org/distribution/leap/15.3/jeos/openSUSE-Leap-15.3-JeOS.x86_64-OpenStack-Cloud.qcow2"
+# opensuse_leap_image_uri = "${HOME}/Documents/myImages/kvm/opensuse-leap/openSUSE-Leap-15.3-JeOS.x86_64-OpenStack-Cloud.qcow2"
 
 # URL of the image to use
 # EXAMPLE:
 # opensuse_tumbleweed_image_uri = "openSUSE-Tumbleweed-JeOS.x86_64-OpenStack-Cloud.qcow2"
 # opensuse_tumbleweed_image_uri = "http://download.opensuse.org/tumbleweed/appliances/openSUSE-Tumbleweed-JeOS.x86_64-OpenStack-Cloud.qcow2"
 opensuse_tumbleweed_image_uri = "${HOME}/Documents/myImages/kvm/opensuse-tumbleweed/openSUSE-Tumbleweed-JeOS.x86_64-OpenStack-Cloud.qcow2"
+
+# URL of the image to use
+# EXAMPLE:
+# oracle_linux_image_uri="https://yum.oracle.com/templates/OracleLinux/OL7/u9/x86_64/OL7U9_x86_64-olvm-b86.qcow2"
+# oracle_linux_image_uri="https://yum.oracle.com/templates/OracleLinux/OL8/u4/x86_64/OL8U4_x86_64-olvm-b85.qcow2"
+# oracle_linux_image_uri = "${HOME}/Documents/myImages/kvm/oracle-linux/OL7U9_x86_64-olvm-b86.qcow2"
+oracle_linux_image_uri = "${HOME}/Documents/myImages/kvm/oracle-linux/OL8U4_x86_64-olvm-b85.qcow2"
 
 # URL of the rancher-k3os image to use
 # EXAMPLE:
@@ -103,15 +117,15 @@ raspios_image_uri = "${HOME}/Documents/myImages/kvm/raspios/2020-12-02-raspios-b
 
 # URL of the image to use
 # EXAMPLE:
-# sles_image_uri = "SLES15-SP2-JeOS.x86_64-15.2-OpenStack-Cloud-GM.qcow2"
-# sles_image_uri = "https://download.suse.de/install/SLE-15-SP2-JeOS-GM/SLES15-SP2-JeOS.x86_64-15.2-OpenStack-Cloud-GM.qcow2"
-# sles_image_uri = "${HOME}/Documents/myImages/kvm/sles/SLES15-SP2-JeOS.x86_64-15.2-OpenStack-Cloud-GM.qcow2"
+# sles_image_uri = "SLES15-SP2-JeOS.x86_64-15.3-OpenStack-Cloud-GM.qcow2"
+# sles_image_uri = "https://download.suse.de/install/SLE-15-SP2-JeOS-GM/SLES15-SP2-JeOS.x86_64-15.3-OpenStack-Cloud-GM.qcow2"
+# sles_image_uri = "${HOME}/Documents/myImages/kvm/sles/SLES15-SP2-JeOS.x86_64-15.3-OpenStack-Cloud-GM.qcow2"
 
 # URL of the image to use
 # EXAMPLE:
-# ubuntu_image_uri = "ubuntu-18.04-server-cloudimg-amd64.img"
-# ubuntu_image_uri = "https://cloud-images.ubuntu.com/releases/xenial/release/ubuntu-18.04-server-cloudimg-amd64.img"
-ubuntu_image_uri = "${HOME}/Documents/myImages/kvm/ubuntu/ubuntu-18.04-server-cloudimg-amd64.img"
+# ubuntu_image_uri = "ubuntu-20.04-server-cloudimg-amd64.img"
+# ubuntu_image_uri = "https://cloud-images.ubuntu.com/releases/xenial/release/ubuntu-20.04-server-cloudimg-amd64.img"
+ubuntu_image_uri = "${HOME}/Documents/myImages/kvm/ubuntu/ubuntu-20.04-server-cloudimg-amd64.img"
 
 # Identifier to make all your resources unique and avoid clashes with other users of this terraform project
 # stack_name = "my-mos-cluster"
@@ -144,12 +158,16 @@ fedoras       = 0
 fedora_memory = 5120
 
 # Number of opensuse-leap nodes
-opensuse_leaps       = 1
+opensuse_leaps       = 0
 opensuse_leap_memory = 5120
 
 # Number of opensuse-tumbleweed nodes
 opensuse_tumbleweeds       = 0
 opensuse_tumbleweed_memory = 5120
+
+# Number of oracle-linux nodes
+oracle_linuxes       = 0
+oracle_linux_memory = 5120
 
 # Number of rancher-k3os nodes
 rancher_k3oss       = 0
@@ -201,6 +219,7 @@ repositories = {}
 # Minimum required packages. Do not remove them.
 # Feel free to add more packages
 packages = [
+  "util-linux",
   "python3",
   "curl",
   "wget",
@@ -208,8 +227,13 @@ packages = [
   "jq",
   "which",
   "openssl",
-  "iscsi-initiator-utils",
-  "nfs-utils"
+  "open-iscsi",
+  "nfs-kernel-server",
+  "tar",
+  "zip",
+  "unzip",
+  "gzip",
+  "zstd"
 ]
 
 # ssh keys to inject into all the nodes

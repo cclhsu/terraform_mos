@@ -4,8 +4,9 @@
 #   path = "/tmp/terraform-provider-libvirt-pool-${var.pool}"
 # }
 
-# We fetch the latest centos release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "sles_image" {
+  count  = var.sless == 0 ? 0 : 1
   name   = "${var.stack_name}-${basename(var.sles_image_uri)}"
   source = var.sles_image_uri
   pool   = var.pool
@@ -83,7 +84,7 @@ resource "libvirt_volume" "sles" {
   name           = "${var.stack_name}-sles-volume-${count.index}"
   pool           = var.pool
   size           = var.sles_disk_size
-  base_volume_id = libvirt_volume.sles_image.id
+  base_volume_id = libvirt_volume.sles_image[0].id
 }
 
 # for more info about parameter check this out

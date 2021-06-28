@@ -4,8 +4,9 @@
 #   path = "/tmp/terraform-provider-libvirt-pool-${var.pool}"
 # }
 
-# We fetch the latest rancher-os release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "rancher_os_image" {
+  count  = var.rancher_oss == 0 ? 0 : 1
   name   = "${var.stack_name}-${basename(var.rancher_os_image_uri)}"
   source = var.rancher_os_image_uri
   pool   = var.pool
@@ -39,7 +40,7 @@ resource "libvirt_volume" "rancher-os" {
   name           = "${var.stack_name}-rancher-os-volume-${count.index}"
   pool           = var.pool
   size           = var.rancher_os_disk_size
-  base_volume_id = libvirt_volume.rancher_os_image.id
+  base_volume_id = libvirt_volume.rancher_os_image[0].id
 }
 
 resource "libvirt_cloudinit_disk" "rancher-os" {

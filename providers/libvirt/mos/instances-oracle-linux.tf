@@ -5,61 +5,61 @@
 # }
 
 # We fetch the latest release image from their mirrors
-resource "libvirt_volume" "ubuntu_image" {
-  count  = var.ubuntus == 0 ? 0 : 1
-  name   = "${var.stack_name}-${basename(var.ubuntu_image_uri)}"
-  source = var.ubuntu_image_uri
+resource "libvirt_volume" "oracle_linux_image" {
+  count  = var.oracle_linuxes == 0 ? 0 : 1
+  name   = "${var.stack_name}-${basename(var.oracle_linux_image_uri)}"
+  source = var.oracle_linux_image_uri
   pool   = var.pool
   format = "qcow2"
 }
 
-data "template_file" "ubuntu_commands" {
+data "template_file" "oracle_linux_commands" {
   count    = join("", var.packages) == "" ? 0 : 1
-  template = file("${path.module}/cloud-init-ubuntu/commands.tpl")
+  template = file("${path.module}/cloud-init-oracle-linux/commands.tpl")
 }
 
-data "template_file" "ubuntu_cloud-init" {
-  count    = var.ubuntus
-  template = file("${path.module}/cloud-init-ubuntu/cloud-init.yaml.tpl")
+data "template_file" "oracle_linux_cloud-init" {
+  count    = var.oracle_linuxes
+  template = file("${path.module}/cloud-init-oracle-linux/cloud-init.yaml.tpl")
 
   vars = {
     authorized_keys    = join("\n", formatlist("  - %s", var.authorized_keys))
     username           = var.username
     password           = var.password
-    hostname           = "${var.stack_name}-ubuntu-${count.index}"
+    hostname           = "${var.stack_name}-oracle-linux-${count.index}"
     hostname_from_dhcp = var.hostname_from_dhcp == true && var.cpi_enable == false ? "yes" : "no"
     ntp_servers        = join("\n", formatlist("    - %s", var.ntp_servers))
     dns_nameservers    = join("\n", formatlist("    - %s", var.dns_nameservers))
     packages           = join("\n", formatlist("  - %s", var.packages))
-    commands           = join("\n", data.template_file.ubuntu_commands.*.rendered)
+    commands           = join("\n", data.template_file.oracle_linux_commands.*.rendered)
   }
 }
 
-resource "libvirt_volume" "ubuntu" {
-  count          = var.ubuntus
-  name           = "${var.stack_name}-ubuntu-volume-${count.index}"
+resource "libvirt_volume" "oracle-linux" {
+  count          = var.oracle_linuxes
+  name           = "${var.stack_name}-oracle-linux-volume-${count.index}"
   pool           = var.pool
-  size           = var.ubuntu_disk_size
-  base_volume_id = libvirt_volume.ubuntu_image[0].id
+  size           = var.oracle_linux_disk_size
+  base_volume_id = libvirt_volume.oracle_linux_image[0].id
 }
 
-resource "libvirt_cloudinit_disk" "ubuntu" {
-  # needed when 0 ubuntu nodes are defined
-  count     = var.ubuntus
-  name      = "${var.stack_name}-ubuntu-cloudinit-disk-${count.index}"
+resource "libvirt_cloudinit_disk" "oracle_linux" {
+  # needed when 0 oracle_linux nodes are defined
+  count     = var.oracle_linuxes
+  name      = "${var.stack_name}-oracle-linux-cloudinit-disk-${count.index}"
   pool      = var.pool
-  user_data = data.template_file.ubuntu_cloud-init[count.index].rendered
+  user_data = data.template_file.oracle_linux_cloud-init[count.index].rendered
 }
 
 # Create the machine
-resource "libvirt_domain" "ubuntu" {
-  count  = var.ubuntus
-  name   = "${var.stack_name}-ubuntu-domain-${count.index}"
-  memory = var.ubuntu_memory
-  vcpu   = var.ubuntu_vcpu
+resource "libvirt_domain" "oracle-linux" {
+  count  = var.oracle_linuxes
+  name   = "${var.stack_name}-oracle-linux-domain-${count.index}"
+  memory = var.oracle_linux_memory
+  vcpu   = var.oracle_linux_vcpu
   # emulator = "/usr/bin/qemu-system-x86_64"
   cloudinit = element(
-    libvirt_cloudinit_disk.ubuntu.*.id,
+    libvirt_cloudinit_disk.oracle_linux.*.id,
     count.index
   )
   depends_on = [libvirt_domain.lb, ]
@@ -67,7 +67,7 @@ resource "libvirt_domain" "ubuntu" {
   network_interface {
     network_name   = var.network_name
     network_id     = var.network_name == "" ? libvirt_network.network.0.id : null
-    hostname       = "${var.stack_name}-ubuntu-${count.index}"
+    hostname       = "${var.stack_name}-oracle-linux-${count.index}"
     wait_for_lease = true
   }
 
@@ -92,7 +92,7 @@ resource "libvirt_domain" "ubuntu" {
 
   disk {
     volume_id = element(
-      libvirt_volume.ubuntu.*.id,
+      libvirt_volume.oracle-linux.*.id,
       count.index
     )
   }
@@ -103,13 +103,13 @@ resource "libvirt_domain" "ubuntu" {
   }
 }
 
-# resource "null_resource" "ubuntu_wait_cloudinit" {
-#   count      = var.ubuntus
-#   depends_on = [libvirt_domain.ubuntu,]
+# resource "null_resource" "oracle_linux_wait_cloudinit" {
+#   count      = var.oracle_linuxes
+#   depends_on = [libvirt_domain.oracle-linux,]
 
 #   connection {
 #     host = element(
-#       libvirt_domain.ubuntu.*.network_interface.0.addresses.0,
+#       libvirt_domain.oracle-linux.*.network_interface.0.addresses.0,
 #       count.index
 #     )
 #     user     = var.username
@@ -124,13 +124,13 @@ resource "libvirt_domain" "ubuntu" {
 #   }
 # }
 
-resource "null_resource" "ubuntu_wait_set_hostname" {
-  count      = var.ubuntus
-  depends_on = [libvirt_domain.ubuntu, ]
+resource "null_resource" "oracle_linux_wait_set_hostname" {
+  count      = var.oracle_linuxes
+  depends_on = [libvirt_domain.oracle-linux, ]
 
   connection {
     host = element(
-      libvirt_domain.ubuntu.*.network_interface.0.addresses.0,
+      libvirt_domain.oracle-linux.*.network_interface.0.addresses.0,
       count.index
     )
     user     = var.username
@@ -140,20 +140,20 @@ resource "null_resource" "ubuntu_wait_set_hostname" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo hostnamectl set-hostname ${var.stack_name}-ubuntu-${count.index}",
+      "sudo hostnamectl set-hostname ${var.stack_name}-oracle-linux-${count.index}",
     ]
   }
 }
 
-# resource "null_resource" "ubuntu_reboot" {
-#   count      = var.ubuntus
-#   depends_on = [null_resource.ubuntu_wait_cloudinit,]
+# resource "null_resource" "oracle_linux_reboot" {
+#   count      = var.oracle_linuxes
+#   depends_on = [null_resource.oracle_linux_wait_cloudinit,]
 
 #   provisioner "local-exec" {
 #     environment = {
 #       user = var.username
 #       host = element(
-#         libvirt_domain.ubuntu.*.network_interface.0.addresses.0,
+#         libvirt_domain.oracle-linux.*.network_interface.0.addresses.0,
 #         count.index
 #       )
 #     }

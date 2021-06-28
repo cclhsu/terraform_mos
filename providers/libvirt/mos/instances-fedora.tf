@@ -4,8 +4,9 @@
 #   path = "/tmp/terraform-provider-libvirt-pool-${var.pool}"
 # }
 
-# We fetch the latest fedora release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "fedora_image" {
+  count  = var.fedoras == 0 ? 0 : 1
   name   = "${var.stack_name}-${basename(var.fedora_image_uri)}"
   source = var.fedora_image_uri
   pool   = var.pool
@@ -39,7 +40,7 @@ resource "libvirt_volume" "fedora" {
   name           = "${var.stack_name}-fedora-volume-${count.index}"
   pool           = var.pool
   size           = var.fedora_disk_size
-  base_volume_id = libvirt_volume.fedora_image.id
+  base_volume_id = libvirt_volume.fedora_image[0].id
 }
 
 resource "libvirt_cloudinit_disk" "fedora" {

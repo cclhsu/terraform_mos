@@ -4,8 +4,9 @@
 #   path = "/tmp/terraform-provider-libvirt-pool-${var.pool}"
 # }
 
-# We fetch the latest centos release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "lb_image" {
+  count    = var.create_lb ? 1 : 0
   name   = "${var.stack_name}-lb-${basename(var.lb_image_uri)}"
   source = var.lb_image_uri
   pool   = var.pool
@@ -80,7 +81,7 @@ resource "libvirt_volume" "lb_image" {
 
 # data "template_file" "nginx_config" {
 #   count    = var.create_http_server ? 1 : 0
-#   template = "${file("${path.module}/cloud-init/nginx.conf")}"
+#   template = file("${path.module}/cloud-init/nginx.conf")
 
 #   vars {
 #     hostname    = "${var.stack_name}-lb"
@@ -90,17 +91,41 @@ resource "libvirt_volume" "lb_image" {
 
 # data "template_file" "server_config" {
 #   count    = var.create_http_server ? 1 : 0
-#   template = "${file("${path.module}/cloud-init/cloud-init-server.yaml.tpl")}"
+#   template = file("${path.module}/cloud-init/cloud-init-server.yaml.tpl")
+
+#   vars = {
+#     authorized_keys    = join("\n", formatlist("  - %s", var.authorized_keys))
+#     # username           = var.username
+#     # password           = var.password
+#     # hostname           = "${var.stack_name}-lb"
+#     # hostname_from_dhcp = var.hostname_from_dhcp == true && var.cpi_enable == false ? "yes" : "no"
+#     # ntp_servers        = join("\n", formatlist("    - %s", var.ntp_servers))
+#     # dns_nameservers    = join("\n", formatlist("    - %s", var.dns_nameservers))
+#     # packages           = join("\n", formatlist("  - %s", var.packages))
+#     # commands           = join("\n", data.template_file.lb_commands.*.rendered)
+#   }
 # }
 
 # data "template_file" "agent_config" {
 #   count    = var.create_http_server ? 1 : 0
-#   template = "${file("${path.module}/cloud-init/cloud-init-agent.yaml.tpl")}"
+#   template = file("${path.module}/cloud-init/cloud-init-agent.yaml.tpl")
+
+#   vars = {
+#     authorized_keys    = join("\n", formatlist("  - %s", var.authorized_keys))
+#     # username           = var.username
+#     # password           = var.password
+#     # hostname           = "${var.stack_name}-lb"
+#     # hostname_from_dhcp = var.hostname_from_dhcp == true && var.cpi_enable == false ? "yes" : "no"
+#     # ntp_servers        = join("\n", formatlist("    - %s", var.ntp_servers))
+#     # dns_nameservers    = join("\n", formatlist("    - %s", var.dns_nameservers))
+#     # packages           = join("\n", formatlist("  - %s", var.packages))
+#     # commands           = join("\n", data.template_file.lb_commands.*.rendered)
+#   }
 # }
 
 # data "template_file" "http_server_service" {
 #   count    = var.create_http_server ? 1 : 0
-#   template = "${file("${path.module}/cloud-init/python3-http-server.service.tpl")}"
+#   template = file("${path.module}/cloud-init/python3-http-server.service.tpl")
 # }
 
 data "template_file" "lb_commands" {
@@ -130,7 +155,7 @@ resource "libvirt_volume" "lb" {
   name           = "${var.stack_name}-lb-volume"
   pool           = var.pool
   size           = var.lb_disk_size
-  base_volume_id = libvirt_volume.lb_image.id
+  base_volume_id = libvirt_volume.lb_image[0].id
 }
 
 resource "libvirt_cloudinit_disk" "lb" {
@@ -297,13 +322,13 @@ resource "null_resource" "lb_wait_set_hostname" {
 
 #   provisioner "remote-exec" {
 #     inline = [
-#       "sudo mkdir /var/www/html",
+#       "sudo mkdir -p /var/www/html",
 #       "sudo mv /tmp/cloud-init-server.yaml /var/www/html/cloud-init-server.yaml",
 #       "sudo mv /tmp/cloud-init-agent.yaml /var/www/html/cloud-init-agent.yaml",
 #       "sudo mv /tmp/python3-http-server.service /etc/systemd/system/python3-http-server.service",
-#       "sudo systemctl reload python3-http-server.service",
 #       "sudo systemctl enable python3-http-server.service",
 #       "sudo systemctl start python3-http-server.service",
+#       "sleep 5",
 #     ]
 #   }
 

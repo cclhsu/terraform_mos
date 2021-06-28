@@ -4,8 +4,9 @@
 #   path = "/tmp/terraform-provider-libvirt-pool-${var.pool}"
 # }
 
-# We fetch the latest raspios release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "raspios_image" {
+  count  = var.raspioss == 0 ? 0 : 1
   name   = "${var.stack_name}-${basename(var.raspios_image_uri)}"
   source = var.raspios_image_uri
   pool   = var.pool
@@ -48,7 +49,7 @@ resource "libvirt_volume" "raspios" {
   name           = "${var.stack_name}-raspios-volume-${count.index}"
   pool           = var.pool
   size           = var.raspios_disk_size
-  base_volume_id = libvirt_volume.raspios_image.id
+  base_volume_id = libvirt_volume.raspios_image[0].id
 }
 
 resource "libvirt_cloudinit_disk" "raspios" {

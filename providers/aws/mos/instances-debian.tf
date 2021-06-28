@@ -19,7 +19,7 @@ data "aws_ami" "debian" {
   }
 }
 
-# We fetch the latest centos release image from their mirrors
+# We fetch the latest release image from their mirrors
 resource "libvirt_volume" "debian_image" {
   name   = "${var.stack_name}-${basename(var.debian_image_uri)}"
   source = var.debian_image_uri
